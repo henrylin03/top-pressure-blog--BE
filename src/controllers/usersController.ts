@@ -5,7 +5,7 @@ import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-const signupPost = [
+const newUserPost = [
 	validateSignupForm,
 	async (req: Request, res: Response) => {
 		const formData = matchedData(req, { onlyValidData: false });
@@ -31,4 +31,4 @@ const signupPost = [
 	},
 ];
 
-export { signupPost };
+export { newUserPost };
