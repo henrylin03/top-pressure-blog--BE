@@ -19,16 +19,15 @@ const signupPost = [
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 
-		const newUser = await prisma.user.create({
-			data: {
-				email,
-				username,
-				password: hashedPassword,
-			},
-		});
-		const userDetails = { email: newUser.email, username: newUser.username };
-
-		res.status(201).json(userDetails);
+		try {
+			const newUser = await prisma.user.create({
+				data: { email, username, password: hashedPassword },
+			});
+			const userDetails = { email: newUser.email, username: newUser.username };
+			res.status(201).json(userDetails);
+		} catch (err) {
+			res.status(500).json({ error: err });
+		}
 	},
 ];
 
