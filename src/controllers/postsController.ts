@@ -23,29 +23,6 @@ const addNewDraftPost = [
 	},
 ];
 
-// const _addNewPost = [
-//   authenticateWithJwt,
-//   confirmUserIsAuthorised,
-//   validatePost,
-//   async (req: AuthenticatedRequest, res: Response) => {
-//     const data = matchedData(req, { onlyValidData: false });
-//     const { title, text } = data;
-
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty())
-//       return res.status(400).json({ errors: errors.array(), title, text });
-
-//     try {
-//       const newPost = await prisma.post.create({
-//         data: { title, text, authorId: String(req.user.id) },
-//       });
-//       res.status(201).json({ message: "New post created", newPost });
-//     } catch (error) {
-//       res.status(500).json({ error });
-//     }
-//   },
-// ];
-
 const editPost = [
 	authenticateWithJwt,
 	confirmUserIsAuthorised,
