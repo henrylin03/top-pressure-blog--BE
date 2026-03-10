@@ -7,4 +7,6 @@ const loginPost = [
 	createJwt,
 ];
 
-export { loginPost };
+const authenticateWithJwt = passport.authenticate("jwt", { session: false });
+
+export { authenticateWithJwt, loginPost };
