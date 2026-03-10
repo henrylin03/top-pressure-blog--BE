@@ -39,7 +39,8 @@
 
 		// aliases
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@prisma/*": ["./generated/prisma/*"]
 		}
 	},
 	"include": ["src/**/*"]
