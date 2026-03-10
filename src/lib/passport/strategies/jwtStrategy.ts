@@ -10,9 +10,7 @@ const OPTIONS = {
 const jwtStrategy = new JwtStrategy(OPTIONS, async (payload, done) => {
 	try {
 		const user = await prisma.user.findUnique({
-			where: {
-				id: payload.user.id,
-			},
+			where: { id: payload.sub },
 		});
 		if (user) return done(null, user);
 		else return done(null, false);
