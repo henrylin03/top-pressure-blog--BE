@@ -2,6 +2,11 @@ import express from "express";
 import authRouter from "./routers/authRouter";
 import postsRouter from "./routers/postsRouter";
 import usersRouter from "./routers/usersRouter";
+import "dotenv/config";
+
+if (!process.env.SECRET) {
+	throw new Error("SECRET variable missing in dotenv file.");
+}
 
 const app = express();
 

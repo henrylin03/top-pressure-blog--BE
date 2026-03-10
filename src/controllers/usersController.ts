@@ -1,9 +1,8 @@
+import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
-import validateSignupForm from "@/middleware/validateSignupForm";
-import "dotenv/config";
-import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import validateSignupForm from "@/middleware/validateSignupForm";
 
 const newUserPost = [
 	validateSignupForm,
