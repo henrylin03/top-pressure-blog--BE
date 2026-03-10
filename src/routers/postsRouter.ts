@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
 	addNewDraftPost,
+	editPost,
 	getPost,
 	getPublishedPosts,
 } from "@/controllers/postsController";
@@ -8,7 +9,10 @@ import {
 const postsRouter = Router();
 
 postsRouter.get("/", getPublishedPosts);
+
 postsRouter.get("/:postId", getPost);
+postsRouter.put("/:postId", editPost);
+//? .patch for publishing?? or just have the req.body have it in form so when user clicks 'publish' (instead of 'save to draft') we also send 'isPublished = true'??
 
 postsRouter.post("/new", addNewDraftPost);
 // TODO: admin users can also _publish_ post
