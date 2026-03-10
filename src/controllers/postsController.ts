@@ -8,7 +8,22 @@ import {
 import validatePost from "@/middleware/validation/validatePost";
 import type { AuthenticatedRequest } from "@/types/types";
 
-const addNewPost = [
+const addNewDraftPost = [
+	authenticateWithJwt,
+	confirmUserIsAuthorised,
+	async (req: AuthenticatedRequest, res: Response) => {
+		try {
+			const newDraftPost = await prisma.post.create({
+				data: { authorId: String(req.user.id), isPublished: false },
+			});
+			res.status(201).json({ message: "New draft post created", newDraftPost });
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	},
+];
+
+const _addNewPost = [
 	authenticateWithJwt,
 	confirmUserIsAuthorised,
 	validatePost,
@@ -55,4 +70,4 @@ const getPost = async (req: Request, res: Response) => {
 	res.json(post);
 };
 
-export { addNewPost, getPost, getPublishedPosts };
+export { addNewDraftPost, getPost, getPublishedPosts };
