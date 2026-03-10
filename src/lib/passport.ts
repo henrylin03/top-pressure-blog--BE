@@ -1,23 +1,30 @@
+import bcrypt from "bcryptjs";
 import passport from "passport";
-import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
-import "dotenv/config";
+import {
+	type IStrategyOptions,
+	Strategy as LocalStrategy,
+} from "passport-local";
 import { prisma } from "./prisma";
 
-const OPTIONS = {
-	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-	secretOrKey: String(process.env.SECRET),
+const OPTIONS: IStrategyOptions = {
+	usernameField: "usernameOrEmail",
+	session: false,
 };
 
 passport.use(
-	new JwtStrategy(OPTIONS, async (jwtPayload, done) => {
+	new LocalStrategy(OPTIONS, async (username, password, done) => {
 		try {
-			const user = await prisma.user.findUnique({
-				where: { email: jwtPayload.email },
+			const user = await prisma.user.findFirst({
+				where: { OR: [{ email: username }, { username }] },
 			});
-			if (!user) return done(null, false, { message: "Email not found" });
+			if (!user) return done(null, false);
+
+			const isMatchedPassword = await bcrypt.compare(password, user.password);
+			if (!isMatchedPassword) return done(null, false);
+
 			return done(null, user);
 		} catch (error) {
-			return done(error, false);
+			done(error);
 		}
 	}),
 );

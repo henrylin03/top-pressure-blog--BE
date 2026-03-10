@@ -3,22 +3,23 @@ import "dotenv/config";
 import jwt from "jsonwebtoken";
 import passport from "@/lib/passport";
 
-const loginPost = (req: Request, res: Response) => {
-	const { email, password } = req.body;
-	if (email === "correct@email.com") {
-		if (password === "Password") {
-			const options = { expiresIn: 120 };
-			const secret = process.env.SECRET;
+const createJwt = (req: Request, res: Response) => {
+	const { user } = req;
+	if (!user) return res.status(401).json({ error: "Auth failed" });
 
-			const token = jwt.sign({ email }, String(secret), options);
-			return res.status(200).json({ message: "Auth ok", token });
-		}
-	}
-	res.status(401).json({ error: "Auth failed" });
+	const JWT_EXPIRATION_IN_MS = 120; // 2mins
+	const secret = process.env.SECRET;
+
+	const token = jwt.sign({ user: { id: user.id } }, String(secret), {
+		expiresIn: JWT_EXPIRATION_IN_MS,
+	});
+
+	return res.status(200).json({ message: "Auth ok", token });
 };
 
-// const loginPost = passport.authenticate("jwt", {
-//   session: false,
-// });
+const loginPost = [
+	passport.authenticate("local", { session: false }),
+	createJwt,
+];
 
 export { loginPost };
