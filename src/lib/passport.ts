@@ -1,10 +1,17 @@
 import bcrypt from "bcryptjs";
+import "dotenv/config";
 import passport from "passport";
+import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import {
 	type IStrategyOptions,
 	Strategy as LocalStrategy,
 } from "passport-local";
 import { prisma } from "./prisma";
+
+const JWT_STRATEGY_OPTIONS = {
+	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+	secretOrKey: process.env.SECRET,
+};
 
 const LOCAL_STRATEGY_OPTIONS: IStrategyOptions = {
 	usernameField: "usernameOrEmail",
