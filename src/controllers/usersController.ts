@@ -2,7 +2,9 @@ import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
 import { prisma } from "@/lib/prisma";
+import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth";
 import validateSignupForm from "@/middleware/validation/validateSignupForm";
+import type { AuthenticatedRequest } from "@/types/types";
 
 const newUserPost = [
 	validateSignupForm,
@@ -30,4 +32,19 @@ const newUserPost = [
 	},
 ];
 
-export { newUserPost };
+const getMyPosts = [
+	authenticateWithJwt,
+	checkIsAuthor,
+	async (req: AuthenticatedRequest, res: Response) => {
+		try {
+			const myPosts = await prisma.post.findMany({
+				where: { authorId: req.user.id },
+			});
+			res.status(200).json({ posts: myPosts });
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	},
+];
+
+export { getMyPosts, newUserPost };
