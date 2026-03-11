@@ -1,14 +1,14 @@
 import type { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
 import { prisma } from "@/lib/prisma";
-import { checkIfPostExists } from "@/middleware/checkExists";
+import { checkPostExists } from "@/middleware/checkExists";
 import validateComment from "@/middleware/validation/validateComment";
 import type { AuthenticatedRequest } from "@/types/types";
 import { authenticateWithJwt } from "../middleware/auth";
 
 const addComment = [
 	authenticateWithJwt,
-	checkIfPostExists,
+	checkPostExists,
 	validateComment,
 	async (req: AuthenticatedRequest, res: Response) => {
 		const errors = validationResult(req);
@@ -36,7 +36,7 @@ const addComment = [
 ];
 
 const getComments = [
-	checkIfPostExists,
+	checkPostExists,
 	async (req: Request, res: Response) => {
 		const { postId } = req.params;
 		const comments = await prisma.comment.findMany({

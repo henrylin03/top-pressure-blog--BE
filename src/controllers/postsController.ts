@@ -5,6 +5,7 @@ import {
 	authenticateWithJwt,
 	confirmUserIsAuthorised,
 } from "@/middleware/auth";
+import { checkPostExists } from "@/middleware/checkExists";
 import validatePost from "@/middleware/validation/validatePost";
 import type { AuthenticatedRequest } from "@/types/types";
 
@@ -17,6 +18,22 @@ const addNewDraftPost = [
 				data: { authorId: String(req.user.id), isPublished: false },
 			});
 			res.status(201).json({ message: "New draft post created", newDraftPost });
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	},
+];
+
+const deletePost = [
+	authenticateWithJwt,
+	confirmUserIsAuthorised,
+	checkPostExists,
+	async (req: AuthenticatedRequest, res: Response) => {
+		try {
+			const _postForDeletion = await prisma.post.delete({
+				where: { id: String(req.params.postId) },
+			});
+			res.status(204).end();
 		} catch (error) {
 			res.status(500).json({ error });
 		}
@@ -78,4 +95,4 @@ const getPost = async (req: Request, res: Response) => {
 	res.json(post);
 };
 
-export { addNewDraftPost, editPost, getPost, getPublishedPosts };
+export { addNewDraftPost, deletePost, editPost, getPost, getPublishedPosts };

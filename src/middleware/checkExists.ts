@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { prisma } from "@/lib/prisma";
 
-const checkIfPostExists = async (
+const checkPostExists = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
@@ -17,4 +17,4 @@ const checkIfPostExists = async (
 	next();
 };
 
-export { checkIfPostExists };
+export { checkPostExists };
