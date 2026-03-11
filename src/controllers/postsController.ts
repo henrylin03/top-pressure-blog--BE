@@ -53,6 +53,7 @@ const deletePost = [
 const editPost = [
 	authenticateWithJwt,
 	checkIsAuthor,
+	checkPostExists,
 	validatePost,
 	async (req: AuthenticatedRequest, res: Response) => {
 		const data = matchedData(req, { onlyValidData: false });
@@ -63,16 +64,25 @@ const editPost = [
 			return res.status(400).json({ errors: errors.array(), title, text });
 
 		const { postId } = req.params;
-		const { id: authorId } = req.user;
+		const post = await prisma.post.findUnique({
+			where: { id: String(postId) },
+		});
+
+		if (String(post?.authorId) !== String(req.user.id))
+			return res.status(403).json({
+				error: "InsufficientPermissions",
+				message: "Only the author of a post can edit it",
+			});
 
 		try {
-			const post = await prisma.post.findUnique({
-				where: { id: String(postId) },
-			});
-			if (!post) return res.status(404).json({ error: "Post not found" });
 			const updatedPost = await prisma.post.update({
 				where: { id: String(postId) },
-				data: { title, text, authorId, lastModifiedAt: new Date() },
+				data: {
+					title,
+					text,
+					authorId: req.user.id,
+					lastModifiedAt: new Date(),
+				},
 			});
 			res.status(200).json({ message: "Post updated", updatedPost });
 		} catch (error) {
