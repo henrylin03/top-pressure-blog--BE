@@ -1,17 +1,14 @@
 import type { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
 import { prisma } from "@/lib/prisma";
-import {
-	authenticateWithJwt,
-	confirmUserIsAuthorised,
-} from "@/middleware/auth";
+import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth";
 import { checkPostExists } from "@/middleware/checkExists";
 import validatePost from "@/middleware/validation/validatePost";
 import type { AuthenticatedRequest } from "@/types/types";
 
 const addNewDraftPost = [
 	authenticateWithJwt,
-	confirmUserIsAuthorised,
+	checkIsAuthor,
 	async (req: AuthenticatedRequest, res: Response) => {
 		try {
 			const newDraftPost = await prisma.post.create({
@@ -26,7 +23,7 @@ const addNewDraftPost = [
 
 const deletePost = [
 	authenticateWithJwt,
-	confirmUserIsAuthorised,
+	checkIsAuthor,
 	checkPostExists,
 	async (req: AuthenticatedRequest, res: Response) => {
 		try {
@@ -42,7 +39,7 @@ const deletePost = [
 
 const editPost = [
 	authenticateWithJwt,
-	confirmUserIsAuthorised,
+	checkIsAuthor,
 	validatePost,
 	async (req: AuthenticatedRequest, res: Response) => {
 		const data = matchedData(req, { onlyValidData: false });

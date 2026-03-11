@@ -5,7 +5,7 @@ export const authenticateWithJwt = passport.authenticate("jwt", {
 	session: false,
 });
 
-export const confirmUserIsAuthorised = (
+export const checkIsAuthor = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
