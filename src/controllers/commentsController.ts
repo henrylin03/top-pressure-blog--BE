@@ -40,12 +40,12 @@ const addComment = [
 
 const getComments = async (req: Request, res: Response) => {
 	const { postId } = req.params;
+	if (!postId) return res.status(404).json({ error: "Post ID missing" });
+
 	const post = await prisma.post.findUnique({
 		where: { id: String(postId) },
 	});
-	//   TODO: early return before the prisma also -- duplication but prevents unnecessary prisma db query
-	if (!postId || !post)
-		return res.status(404).json({ error: "Post not found" });
+	if (!post) return res.status(404).json({ error: "Post not found" });
 
 	const comments = await prisma.comment.findMany({
 		where: { postId: String(postId) },
