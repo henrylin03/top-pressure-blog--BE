@@ -26,6 +26,19 @@ const deletePost = [
 	checkIsAuthor,
 	checkPostExists,
 	async (req: AuthenticatedRequest, res: Response) => {
+		const { id: userId } = req.user;
+		const { postId } = req.params;
+
+		const post = await prisma.post.findUnique({
+			where: { id: String(postId) },
+		});
+
+		if (post?.authorId !== userId)
+			return res.status(403).json({
+				error: "InsufficientPermissions",
+				message: "Only the author of a post can delete the post",
+			});
+
 		try {
 			const _postForDeletion = await prisma.post.delete({
 				where: { id: String(req.params.postId) },
