@@ -36,9 +36,16 @@ const deletePost = [
 			});
 
 		try {
-			const _postForDeletion = await prisma.post.delete({
-				where: { id: post.id },
+			const deleteComments = prisma.comment.deleteMany({
+				where: { postId: post.id },
 			});
+			const deletePost = prisma.post.delete({ where: { id: post.id } });
+
+			const _transaction = await prisma.$transaction([
+				deleteComments,
+				deletePost,
+			]);
+
 			res.status(204).end();
 		} catch (error) {
 			res.status(500).json({ error });
