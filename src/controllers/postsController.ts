@@ -100,20 +100,6 @@ const getPublishedPosts = async (_req: Request, res: Response) => {
 	res.status(200).json({ posts: publishedPosts });
 };
 
-// const getPost = async (req: Request, res: Response) => {
-// 	const { postId } = req.params;
-
-// 	try {
-// 		const post = await prisma.post.findUnique({
-// 			where: { id: String(postId) },
-// 		});
-// 		if (!post) return res.status(404).json({ error: "Post does not exist" });
-// 		res.status(200).json({ post });
-// 	} catch (error) {
-// 		res.status(500).json({ error });
-// 	}
-// };
-
 const getPost = [
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
@@ -122,13 +108,17 @@ const getPost = [
 			});
 			if (!post) return res.status(404).json({ error: "Post does not exist" });
 			if (post.isPublished && post.publishedAt) res.status(200).json({ post });
+
+			req.post = post;
+
 			next();
 		} catch (error) {
 			res.status(500).json({ error });
 		}
 	},
 	authenticateWithJwt,
-	(req: Request, res: Response, next: NextFunction) => {
+	checkIsAuthor,
+	(req: AuthenticatedRequest, res: Response) => {
 		res.send("hello");
 	},
 ];
