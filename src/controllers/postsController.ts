@@ -152,9 +152,14 @@ const publishPost = [
 		if (post.isPublished)
 			return res.status(200).json({ message: "Post already published", post });
 
+		const currentDatetime = new Date();
 		const updatePost = await prisma.post.update({
 			where: { id: String(req.params.postId) },
-			data: { isPublished: true, publishedAt: new Date() },
+			data: {
+				isPublished: true,
+				publishedAt: currentDatetime,
+				lastModifiedAt: currentDatetime,
+			},
 		});
 
 		res.status(200).json({ message: "Post published", post: updatePost });
@@ -181,7 +186,11 @@ const unpublishPost = [
 
 		const updatePost = await prisma.post.update({
 			where: { id: String(req.params.postId) },
-			data: { isPublished: false, publishedAt: null },
+			data: {
+				isPublished: false,
+				publishedAt: null,
+				lastModifiedAt: new Date(),
+			},
 		});
 
 		res.status(200).json({ message: "Post marked as draft", post: updatePost });
