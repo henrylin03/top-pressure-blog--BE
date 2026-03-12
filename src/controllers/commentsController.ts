@@ -35,6 +35,33 @@ const addComment = [
 	},
 ];
 
+const deleteComment = [
+	authenticateWithJwt,
+	checkPostExists,
+	async (req: AuthenticatedRequest, res: Response) => {
+		const { commentId } = req.params;
+
+		const comment = await prisma.comment.findUnique({
+			where: { id: String(commentId) },
+		});
+
+		if (!comment) return res.status(404).json({ error: "Comment not found" });
+		if (comment.authorId !== req.user.id)
+			return res
+				.status(403)
+				.json({ error: "Not authorised to delete comment" });
+
+		try {
+			const _deleteComment = await prisma.comment.delete({
+				where: { id: String(commentId) },
+			});
+			res.status(204);
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	},
+];
+
 const getComments = [
 	checkPostExists,
 	async (req: Request, res: Response) => {
@@ -49,4 +76,4 @@ const getComments = [
 	},
 ];
 
-export { addComment, getComments };
+export { addComment, deleteComment, getComments };
