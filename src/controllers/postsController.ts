@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
 import { prisma } from "@/lib/prisma";
 import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth";
@@ -100,18 +100,35 @@ const getPublishedPosts = async (_req: Request, res: Response) => {
 	res.status(200).json({ posts: publishedPosts });
 };
 
-const getPost = async (req: Request, res: Response) => {
-	const { postId } = req.params;
-	const post = await prisma.post.findUnique({
-		where: {
-			id: String(postId),
-		},
-	});
+const getPost = [
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const post = await prisma.post.findUnique({
+				where: { id: String(req.params.postId) },
+			});
+			if (!post) return res.status(404).json({ error: "Post not found" });
+			if (post.isPublished && post.publishedAt) res.status(200).json({ post });
 
-	if (!post) return res.status(404).json({ error: "Post does not exist" });
-	// TODO: after auth setup, if unpublished, only that author can see the post.
+			req.post = post;
 
-	res.json(post);
-};
+			next();
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	},
+	authenticateWithJwt,
+	(req: AuthenticatedRequest, res: Response) => {
+		const { user, post } = req;
+		if (!user.isAuthor)
+			return res.status(404).json({ error: "Post not found" });
+
+		if (String(post?.authorId) !== String(req.user.id))
+			return res
+				.status(403)
+				.json({ error: "Only author of post can access it" });
+
+		res.status(200).json({ post });
+	},
+];
 
 export { addNewDraftPost, deletePost, editPost, getPost, getPublishedPosts };

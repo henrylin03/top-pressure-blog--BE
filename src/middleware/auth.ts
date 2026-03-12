@@ -13,6 +13,9 @@ export const checkIsAuthor = (
 	const { user } = req;
 	if (!user) return res.status(401).json({ error: "Unauthorised" });
 	if (!user.isAuthor)
-		return res.status(403).json({ error: "You must be an author to post" });
+		return res.status(403).json({
+			error: "InsufficientPermissions",
+			message: "This requires author permissions",
+		});
 	next();
 };
