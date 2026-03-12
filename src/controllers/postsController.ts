@@ -131,4 +131,41 @@ const getPost = [
 	},
 ];
 
-export { addNewDraftPost, deletePost, editPost, getPost, getPublishedPosts };
+const publishPost = [
+	authenticateWithJwt,
+	checkIsAuthor,
+	validatePost,
+	async (req: AuthenticatedRequest, res: Response) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty())
+			return res.status(400).json({ errors: errors.array() });
+
+		const post = await prisma.post.findUnique({
+			where: { id: String(req.params.postId) },
+		});
+
+		if (req.user.id !== post?.authorId)
+			return res
+				.status(403)
+				.json({ error: "Only the author of this post can publish it" });
+
+		if (post.isPublished)
+			return res.status(200).json({ message: "Post already published", post });
+
+		const updatePost = await prisma.post.update({
+			where: { id: String(req.params.postId) },
+			data: { isPublished: true, publishedAt: new Date() },
+		});
+
+		res.status(200).json({ message: "Post published", post: updatePost });
+	},
+];
+
+export {
+	addNewDraftPost,
+	deletePost,
+	editPost,
+	getPost,
+	getPublishedPosts,
+	publishPost,
+};
