@@ -119,7 +119,13 @@ const getPost = [
 	authenticateWithJwt,
 	checkIsAuthor,
 	(req: AuthenticatedRequest, res: Response) => {
-		res.send("hello");
+		const { post } = req;
+		if (String(post?.authorId) !== String(req.user.id))
+			return res
+				.status(403)
+				.json({ error: "Only author of post can access it" });
+
+		res.status(200).json({ post });
 	},
 ];
 
