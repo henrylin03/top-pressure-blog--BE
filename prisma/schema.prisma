@@ -30,18 +30,20 @@ model Post {
   isPublished    Boolean   @default(false)
   createdAt      DateTime  @default(now())
   publishedAt    DateTime?
-  lastModifiedAt DateTime @default(now())
+  lastModifiedAt DateTime  @default(now())
   author         User      @relation(fields: [authorId], references: [id])
   authorId       String
   comments       Comment[]
 }
 
 model Comment {
-  id       String   @id @default(uuid())
-  text     String
-  postedAt DateTime @default(now())
-  post     Post     @relation(fields: [postId], references: [id])
-  postId   String
-  author   User     @relation(fields: [authorId], references: [id])
-  authorId String
+  id           String    @id @default(uuid())
+  text         String
+  postedAt     DateTime  @default(now())
+  isEdited     Boolean   @default(false)
+  lastEditedAt DateTime?
+  post         Post      @relation(fields: [postId], references: [id])
+  postId       String
+  author       User      @relation(fields: [authorId], references: [id])
+  authorId     String
 }
