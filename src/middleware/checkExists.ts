@@ -17,4 +17,22 @@ const checkPostExists = async (
 	next();
 };
 
-export { checkPostExists };
+const checkCommentExists = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	const { commentId } = req.params;
+	if (!commentId) return res.status(404).json({ error: "Comment ID missing" });
+
+	const comment = await prisma.comment.findUnique({
+		where: { id: String(commentId) },
+	});
+	if (!comment) return res.status(404).json({ error: "Comment not found" });
+
+	req.comment = comment;
+
+	next();
+};
+
+export { checkCommentExists, checkPostExists };
