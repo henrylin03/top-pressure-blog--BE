@@ -106,7 +106,7 @@ const getPost = [
 			const post = await prisma.post.findUnique({
 				where: { id: String(req.params.postId) },
 			});
-			if (!post) return res.status(404).json({ error: "Post does not exist" });
+			if (!post) return res.status(404).json({ error: "Post not found" });
 			if (post.isPublished && post.publishedAt) res.status(200).json({ post });
 
 			req.post = post;
@@ -117,9 +117,11 @@ const getPost = [
 		}
 	},
 	authenticateWithJwt,
-	checkIsAuthor,
 	(req: AuthenticatedRequest, res: Response) => {
-		const { post } = req;
+		const { user, post } = req;
+		if (!user.isAuthor)
+			return res.status(404).json({ error: "Post not found" });
+
 		if (String(post?.authorId) !== String(req.user.id))
 			return res
 				.status(403)
