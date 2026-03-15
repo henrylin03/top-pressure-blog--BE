@@ -15,6 +15,26 @@ const attachPost = async (req: Request, res: Response, next: NextFunction) => {
 	next();
 };
 
+const attachDraftPostAndReturnPublishedPost = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const post = await prisma.post.findUnique({
+			where: { id: String(req.params.postId) },
+		});
+		if (!post) return res.status(404).json({ error: "Post not found" });
+		if (post.isPublished && post.publishedAt) res.status(200).json({ post });
+
+		req.post = post;
+
+		next();
+	} catch (error) {
+		res.status(500).json({ error });
+	}
+};
+
 const attachComment = async (
 	req: Request,
 	res: Response,
@@ -33,4 +53,4 @@ const attachComment = async (
 	next();
 };
 
-export { attachPost, attachComment };
+export { attachComment, attachDraftPostAndReturnPublishedPost, attachPost };
