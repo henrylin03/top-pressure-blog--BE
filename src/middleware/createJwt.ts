@@ -5,7 +5,7 @@ const createJwt = (req: Request, res: Response) => {
 	const { user } = req;
 	if (!user) return res.status(401).json({ error: "Auth failed" });
 
-	const JWT_EXPIRATION = "2d";
+	const JWT_EXPIRATION = "1h";
 	const secret = process.env.SECRET;
 
 	const token = jwt.sign({ sub: user.id }, String(secret), {
