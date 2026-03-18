@@ -25,10 +25,10 @@ const attachDraftPostAndReturnPublishedPost = async (
 			where: { id: String(req.params.postId) },
 		});
 		if (!post) return res.status(404).json({ error: "Post not found" });
-		if (post.isPublished && post.publishedAt) res.status(200).json({ post });
+		if (post.isPublished && post.publishedAt)
+			return res.status(200).json({ post });
 
 		req.post = post;
-
 		next();
 	} catch (error) {
 		res.status(500).json({ error });
