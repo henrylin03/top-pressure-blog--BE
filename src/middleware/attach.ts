@@ -23,7 +23,7 @@ const attachDraftPostAndReturnPublishedPost = async (
 	try {
 		const post = await prisma.post.findUnique({
 			where: { id: String(req.params.postId) },
-			include: { comments: true },
+			include: { comments: { include: { author: true } } },
 		});
 		if (!post) return res.status(404).json({ error: "Post not found" });
 		if (post.isPublished && post.publishedAt)
@@ -46,6 +46,7 @@ const attachComment = async (
 
 	const comment = await prisma.comment.findUnique({
 		where: { id: String(commentId) },
+		include: { author: true },
 	});
 	if (!comment) return res.status(404).json({ error: "Comment not found" });
 

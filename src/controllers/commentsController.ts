@@ -105,9 +105,11 @@ const getComments = [
 		const { post } = req;
 		const comments = await prisma.comment.findMany({
 			where: { postId: String(post?.id) },
+			include: {
+				author: true,
+			},
 		});
 		return res.status(200).json({
-			message: `${comments.length} comments retrieved for post`,
 			comments,
 		});
 	},
