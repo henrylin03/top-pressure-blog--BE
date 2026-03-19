@@ -23,7 +23,9 @@ const attachDraftPostAndReturnPublishedPost = async (
 	try {
 		const post = await prisma.post.findUnique({
 			where: { id: String(req.params.postId) },
-			include: { comments: { include: { author: true } } },
+			include: {
+				comments: { include: { author: true }, orderBy: { postedAt: "desc" } },
+			},
 		});
 		if (!post) return res.status(404).json({ error: "Post not found" });
 		if (post.isPublished && post.publishedAt)
