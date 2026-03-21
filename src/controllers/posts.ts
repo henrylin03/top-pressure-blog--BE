@@ -111,6 +111,7 @@ const publishPost = async (req: AuthenticatedRequest, res: Response) => {
 		return res.status(400).json({ errors: errors.array() });
 
 	const { post } = req;
+
 	if (req.user.id !== post?.authorId)
 		return res
 			.status(403)

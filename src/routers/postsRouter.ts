@@ -32,6 +32,7 @@ postsRouter.delete("/:postId", [
 ]);
 postsRouter.patch("/:postId/publish", [
 	authenticateWithJwt,
+	attachPost,
 	checkIsAuthor,
 	publishPost,
 ]);
