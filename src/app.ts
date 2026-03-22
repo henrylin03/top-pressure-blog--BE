@@ -1,7 +1,7 @@
 import express from "express";
-import authRouter from "./routers/authRouter";
-import postsRouter from "./routers/postsRouter";
-import usersRouter from "./routers/usersRouter";
+import authRouter from "./routes/auth";
+import postsRouter from "./routes/posts";
+import usersRouter from "./routes/users";
 import "dotenv/config";
 
 if (!process.env.SECRET) {
