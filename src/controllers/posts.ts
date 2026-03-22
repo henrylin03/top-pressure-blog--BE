@@ -48,12 +48,9 @@ const deletePost = async (req: AuthenticatedRequest, res: Response) => {
 const editPost = [
 	validatePost,
 	async (req: AuthenticatedRequest, res: Response) => {
-		const data = matchedData(req, { onlyValidData: false });
-		const { title, text } = data;
-
 		const errors = validationResult(req);
 		if (!errors.isEmpty())
-			return res.status(400).json({ errors: errors.array(), title, text });
+			return res.status(400).json({ errors: errors.array() });
 
 		const { post } = req;
 		if (String(post?.authorId) !== req.user.id)
@@ -62,12 +59,16 @@ const editPost = [
 				message: "Only the author of a post can edit it",
 			});
 
+		const data = matchedData(req, { onlyValidData: false });
+		const { title, lede, text } = data;
+
 		try {
 			const updatedPost = await prisma.post.update({
 				where: { id: String(post?.id) },
 				data: {
 					title,
 					text,
+					lede,
 					authorId: req.user.id,
 					lastModifiedAt: new Date(),
 				},
