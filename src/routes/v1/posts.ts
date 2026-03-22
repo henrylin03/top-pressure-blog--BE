@@ -9,8 +9,8 @@ import {
 	unpublishPost,
 } from "@/controllers/posts";
 import { attachPost } from "@/middleware/attach";
-import { authenticateWithJwt, checkIsAuthor } from "../middleware/auth";
-import commentsRouter from "./commentsRouter";
+import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth";
+import commentsRouter from "./comments";
 
 const postsRouter = Router();
 
