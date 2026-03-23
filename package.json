@@ -1,10 +1,11 @@
 {
-	"name": "blog-api-backend",
-	"description": "RESTful APIs for Blog API project's backend, written in Express with Prisma ORM integration.",
-	"main": "app.js",
+	"name": "top-pressure-blog--backend",
+	"description": "RESTful APIs for the 'Top Pressure Blog', written in Express with Prisma ORM integration.",
+	"main": "./src/app.js",
 	"scripts": {
 		"build": "tsc",
-		"dev": "tsx watch ./src/app.ts"
+		"dev": "tsx watch ./src/app.ts",
+		"start": "tsx ./src/app.ts"
 	},
 	"author": "Henry Lin",
 	"license": "MIT",
