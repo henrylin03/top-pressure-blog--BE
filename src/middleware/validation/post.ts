@@ -3,8 +3,8 @@ import { body } from "express-validator";
 const validatePost = [
 	body("title")
 		.trim()
-		.isLength({ min: 3, max: 60 })
-		.withMessage("Title must be between 3 and 60 characters"),
+		.isLength({ min: 3, max: 100 })
+		.withMessage("Title must be between 3 and 100 characters"),
 
 	body("lede")
 		.trim()
