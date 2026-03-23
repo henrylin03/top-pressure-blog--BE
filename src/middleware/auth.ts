@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import passport from "@/lib/passport";
+import passport from "@/lib/passport/index.js";
 
 export const authenticateWithJwt = passport.authenticate("jwt", {
 	session: false,

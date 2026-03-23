@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getMyPosts, newUserPost } from "@/controllers/users";
-import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth";
+import { getMyPosts, newUserPost } from "@/controllers/users.js";
+import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth.js";
 
 const usersRouter = Router();
 

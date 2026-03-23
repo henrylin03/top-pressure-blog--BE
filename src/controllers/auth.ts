@@ -1,9 +1,9 @@
 import "dotenv/config";
 import type { Response } from "express";
-import passport from "@/lib/passport";
-import { authenticateWithJwt } from "@/middleware/auth";
-import { createJwt } from "@/middleware/jwt";
-import type { AuthenticatedRequest } from "@/types/types";
+import passport from "@/lib/passport/index.js";
+import { authenticateWithJwt } from "@/middleware/auth.js";
+import { createJwt } from "@/middleware/jwt.js";
+import type { AuthenticatedRequest } from "@/types/types.ts";
 
 const loginPost = [
 	passport.authenticate("local", { session: false }),

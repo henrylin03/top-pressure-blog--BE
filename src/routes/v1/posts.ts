@@ -7,10 +7,10 @@ import {
 	getPublishedPosts,
 	publishPost,
 	unpublishPost,
-} from "@/controllers/posts";
-import { attachPost } from "@/middleware/attach";
-import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth";
-import commentsRouter from "./comments";
+} from "@/controllers/posts.js";
+import { attachPost } from "@/middleware/attach.js";
+import { authenticateWithJwt, checkIsAuthor } from "@/middleware/auth.js";
+import commentsRouter from "./comments.js";
 
 const postsRouter = Router();
 

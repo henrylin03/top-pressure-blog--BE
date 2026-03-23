@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { User } from "@prisma/client.js";
 import type { Request } from "express";
 
 export interface AuthenticatedRequest extends Request {

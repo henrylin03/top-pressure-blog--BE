@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
-import { prisma } from "@/lib/prisma";
-import validateSignupForm from "@/middleware/validation/signup";
-import type { AuthenticatedRequest } from "@/types/types";
+import { prisma } from "@/lib/prisma.js";
+import validateSignupForm from "@/middleware/validation/signup.js";
+import type { AuthenticatedRequest } from "@/types/types.ts";
 
 const newUserPost = [
 	validateSignupForm,

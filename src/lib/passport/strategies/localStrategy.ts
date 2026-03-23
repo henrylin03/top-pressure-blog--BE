@@ -3,7 +3,7 @@ import {
 	type IStrategyOptions,
 	Strategy as LocalStrategy,
 } from "passport-local";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.js";
 
 const OPTIONS: IStrategyOptions = {
 	usernameField: "usernameOrEmail",

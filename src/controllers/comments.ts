@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
-import { prisma } from "@/lib/prisma";
-import { attachComment, attachPost } from "@/middleware/attach";
-import { authenticateWithJwt } from "@/middleware/auth";
-import validateComment from "@/middleware/validation/comment";
-import type { AuthenticatedRequest } from "@/types/types";
+import { prisma } from "@/lib/prisma.js";
+import { attachComment, attachPost } from "@/middleware/attach.js";
+import { authenticateWithJwt } from "@/middleware/auth.js";
+import validateComment from "@/middleware/validation/comment.js";
+import type { AuthenticatedRequest } from "@/types/types.ts";
 
 const addComment = [
 	authenticateWithJwt,

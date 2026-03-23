@@ -1,7 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
-import router from "./routes";
+import router from "./routes/index.js";
 
 if (!process.env.SECRET) {
 	throw new Error("SECRET variable missing in dotenv file.");

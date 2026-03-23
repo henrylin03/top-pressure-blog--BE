@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
-import { calculateTimeToReadInMinutes } from "@/helpers/helpers";
-import { prisma } from "@/lib/prisma";
-import { attachDraftPostAndReturnPublishedPost } from "@/middleware/attach";
-import { authenticateWithJwt } from "@/middleware/auth";
-import validatePost from "@/middleware/validation/post";
-import type { AuthenticatedRequest } from "@/types/types";
+import { calculateTimeToReadInMinutes } from "@/helpers/helpers.js";
+import { prisma } from "@/lib/prisma.js";
+import { attachDraftPostAndReturnPublishedPost } from "@/middleware/attach.js";
+import { authenticateWithJwt } from "@/middleware/auth.js";
+import validatePost from "@/middleware/validation/post.js";
+import type { AuthenticatedRequest } from "@/types/types.ts";
 
 const addNewDraftPost = async (req: AuthenticatedRequest, res: Response) => {
 	try {

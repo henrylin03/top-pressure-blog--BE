@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.js";
 
 const attachPost = async (req: Request, res: Response, next: NextFunction) => {
 	const { postId } = req.params;
