@@ -10,13 +10,13 @@
 	"license": "MIT",
 	"type": "module",
 	"dependencies": {
-		"@prisma/adapter-pg": "^7.5.0",
-		"@prisma/client": "^7.5.0",
+		"@prisma/adapter-pg": "^7.8.0",
+		"@prisma/client": "^7.8.0",
 		"bcryptjs": "^3.0.3",
 		"cors": "^2.8.6",
-		"dotenv": "^17.3.1",
+		"dotenv": "^17.4.2",
 		"express": "^5.2.1",
-		"express-validator": "^7.3.1",
+		"express-validator": "^7.3.2",
 		"jsonwebtoken": "^9.0.3",
 		"passport": "^0.7.0",
 		"passport-jwt": "^4.0.1",
@@ -24,19 +24,19 @@
 		"pg": "^8.20.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.8",
+		"@biomejs/biome": "2.4.12",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.6",
 		"@types/jsonwebtoken": "^9.0.10",
-		"@types/node": "^25.5.0",
+		"@types/node": "^25.6.0",
 		"@types/passport": "^1.0.17",
 		"@types/passport-jwt": "^4.0.1",
 		"@types/passport-local": "^1.0.38",
 		"@types/pg": "^8.20.0",
-		"lefthook": "^2.1.4",
-		"prisma": "^7.5.0",
+		"lefthook": "^2.1.6",
+		"prisma": "^7.8.0",
 		"tsc-alias": "^1.8.16",
 		"tsx": "^4.21.0",
-		"typescript": "^5.9.3"
+		"typescript": "^6.0.3"
 	}
 }
