@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "tsc && tsc-alias",
 		"dev": "tsx watch ./src/app.ts",
-		"test": "jest --setupFiles dotenv/config"
+		"test": "jest"
 	},
 	"author": "Henry Lin",
 	"license": "MIT",
